@@ -55,14 +55,18 @@ object RediculousMetrics {
         Name("rediculous_operation_seconds_total"),
         "Rediculous Seconds Spent During Each Operation Total",
         Sized(Label("name"), Label("operation"), Label("outcome")),
-        { case (name: String, operation: String, outcome: String) => Sized(name, operation, outcome)}
+        { (t: (String, String, String)) => t match {
+          case (name, operation, outcome) => Sized(name, operation, outcome)}
+        }
       )
       operationCount <- Counter.labelled(
         collector, 
         Name("rediculous_operation_count_total"),
         "Rediculous Count Of Each Operation",
         Sized(Label("name"), Label("operation"), Label("outcome")),
-        {case (name: String, operation: String, outcome: String) => Sized(name, operation, outcome)}
+        { (t: (String, String, String)) => t match {
+          case (name, operation, outcome) => Sized(name, operation, outcome)}
+        }
       )
     } yield {(name: String) => (redisConnection: RedisConnection[F]) => 
 
@@ -78,10 +82,11 @@ object RediculousMetrics {
                 Sync[F].delay(System.nanoTime()).flatMap{ end => 
                   val elapsed = (end - start).toDouble
                   val elapsedInSeconds = elapsed / 1000000000
+                  val outcomeString = outcomeToString(outcome)
                   operations.traverse_( operation => 
                     durationHistogram.label(name).observe(elapsedInSeconds) >>
-                    operationCount.label((name, operation, outcome)).inc >>
-                    operationTime.label((name, operation, outcome)).incBy(elapsedInSeconds)
+                    operationCount.label((name, operation, outcomeString)).inc >>
+                    operationTime.label((name, operation, outcomeString)).incBy(elapsedInSeconds)
                   )
                 }
             }
