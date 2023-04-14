@@ -1,4 +1,4 @@
-# epimetheus-rediculous - Epimetheus Metrics for Rediculos [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/epimetheus-rediculous_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/epimetheus-rediculous_2.13)
+# epimetheus-rediculous - Epimetheus Metrics for Rediculous [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/epimetheus-rediculous_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.chrisdavenport/epimetheus-rediculous_2.13)
 
 ## Quick Start
 

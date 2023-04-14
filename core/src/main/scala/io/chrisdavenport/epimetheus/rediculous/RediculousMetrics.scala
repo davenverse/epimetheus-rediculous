@@ -10,12 +10,35 @@ import cats.effect.kernel.Outcome.Succeeded
 import cats.effect.kernel.Outcome.Canceled
 
 object RediculousMetrics {
+  /**
+    * [[measuredByName]] except automatically applies the name "default".
+    * As metrics can only be registered once, these methods should be used as either or.
+    *
+    * @param collector The CollectorRegistry
+    * @return A function which turn a redisConnection into one that measures
+    */
   def measured[F[_]: Async](
     collector: CollectorRegistry[F]
   ): F[RedisConnection[F] => RedisConnection[F]] = {
     measuredByName(collector).map(_("default"))
   }
 
+  /**
+    * This builds 3 independent metrics.
+    * First, a Histogram which looks at overall time of the operations.
+    * Secondly, a count of the total amount of time by operation
+    * Lastly, a count of the total amount of operations
+    * 
+    * The first is a generally useful tool without exploding your
+    * arity. The second two build enough context to get an average
+    * of each operations total time which may tell you useful information
+    * about the operation of how your service is interacting with redis.
+    * 
+    * As metrics can only be registered once, these methods should be used as either or.
+    *
+    * @param collector The CollectorRegistry
+    * @return A function which turn a redisConnection into one that measures
+    */
   def measuredByName[F[_]: Async](
     collector: CollectorRegistry[F]
   ): F[String => RedisConnection[F] => RedisConnection[F]] = {
