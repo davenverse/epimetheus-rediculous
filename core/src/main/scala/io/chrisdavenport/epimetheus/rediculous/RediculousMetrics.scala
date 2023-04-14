@@ -76,11 +76,11 @@ object RediculousMetrics {
           key: Option[scodec.bits.ByteVector]
         ): F[fs2.Chunk[Resp]] = {
           val operations = inputs.map(_.head.decodeUtf8.getOrElse("unknown"))
-          Sync[F].delay(System.nanoTime()).flatMap{ start => 
+          Clock[F].monotonic.flatMap{ start => 
             redisConnection.runRequest(inputs, key).guaranteeCase{
               outcome => 
-                Sync[F].delay(System.nanoTime()).flatMap{ end => 
-                  val elapsed = (end - start).toDouble
+                Clock[F].monotonic.flatMap{ end => 
+                  val elapsed = (end - start).toNanos.toDouble
                   val elapsedInSeconds = elapsed / 1000000000
                   val outcomeString = outcomeToString(outcome)
                   operations.traverse_( operation => 
