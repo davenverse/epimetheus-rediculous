@@ -35,7 +35,7 @@ lazy val core = crossProject(JVMPlatform)
 
     libraryDependencies ++= Seq(
       "io.chrisdavenport" %%% "epimetheus" % "0.5.0",
-      "io.chrisdavenport" %%% "rediculous" % "0.5.0",
+      "io.chrisdavenport" %%% "rediculous" % "0.5.1",
 
       "org.typelevel"               %%% "munit-cats-effect"        % munitCatsEffectV         % Test,
 
