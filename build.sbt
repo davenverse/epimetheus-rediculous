@@ -20,7 +20,7 @@ ThisBuild / scalaVersion := Scala3
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
 
-val munitCatsEffectV = "2.0.0-M3"
+val munitCatsEffectV = "2.0.0-M4"
 
 
 // Projects
