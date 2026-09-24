@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.0" // your current series x.y
+ThisBuild / tlBaseVersion := "0.1" // 0.1.0 is already on Central (published from epimetheus-community)
 
 ThisBuild / organization := "io.chrisdavenport"
 ThisBuild / organizationName := "Christopher Davenport"
@@ -9,12 +9,11 @@ ThisBuild / developers := List(
 ThisBuild / versionScheme := Some("early-semver")
 
 ThisBuild / tlCiReleaseBranches := Seq("main")
-ThisBuild / tlSonatypeUseLegacyHost := true
 
 
-val Scala3 = "3.2.2"
+val Scala3 = "3.3.8"
 
-ThisBuild / crossScalaVersions := Seq("2.13.10", Scala3)
+ThisBuild / crossScalaVersions := Seq("2.13.18", Scala3)
 ThisBuild / scalaVersion := Scala3
 
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
@@ -44,4 +43,11 @@ lazy val core = crossProject(JVMPlatform)
 
 lazy val site = project.in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
+  .settings(
+    laikaTheme := tlSiteHelium.value.site
+      .topNavigationBar(
+        homeLink = laika.helium.config.IconLink.internal(laika.ast.Path.Root / "index.md", laika.helium.config.HeliumIcon.home)
+      )
+      .build
+  )
   .dependsOn(core.jvm)
