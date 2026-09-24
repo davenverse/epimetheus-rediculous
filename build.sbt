@@ -9,12 +9,11 @@ ThisBuild / developers := List(
 ThisBuild / versionScheme := Some("early-semver")
 
 ThisBuild / tlCiReleaseBranches := Seq("main")
-ThisBuild / tlSonatypeUseLegacyHost := true
 
 
-val Scala3 = "3.2.2"
+val Scala3 = "3.3.8"
 
-ThisBuild / crossScalaVersions := Seq("2.13.10", Scala3)
+ThisBuild / crossScalaVersions := Seq("2.13.18", Scala3)
 ThisBuild / scalaVersion := Scala3
 
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
