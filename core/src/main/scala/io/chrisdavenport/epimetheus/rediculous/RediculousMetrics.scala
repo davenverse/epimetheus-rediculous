@@ -14,11 +14,11 @@ object RediculousMetrics {
     * [[measuredByName]] except automatically applies the name "default".
     * As metrics can only be registered once, these methods should be used as either or.
     *
-    * @param collector The CollectorRegistry
+    * @param collector The PrometheusRegistry
     * @return A function which turn a redisConnection into one that measures
     */
   def measured[F[_]: Async](
-    collector: CollectorRegistry[F]
+    collector: PrometheusRegistry[F]
   ): F[RedisConnection[F] => RedisConnection[F]] = {
     measuredByName(collector).map(_("default"))
   }
@@ -36,11 +36,11 @@ object RediculousMetrics {
     * 
     * As metrics can only be registered once, these methods should be used as either or.
     *
-    * @param collector The CollectorRegistry
+    * @param collector The PrometheusRegistry
     * @return A function which turn a redisConnection into one that measures
     */
   def measuredByName[F[_]: Async](
-    collector: CollectorRegistry[F]
+    collector: PrometheusRegistry[F]
   ): F[String => RedisConnection[F] => RedisConnection[F]] = {
     for {
       durationHistogram <- Histogram.labelled(
@@ -52,7 +52,7 @@ object RediculousMetrics {
       )
       operationTime <- Counter.labelled(
         collector, 
-        Name("rediculous_operation_seconds_total"),
+        Name("rediculous_operation_seconds"),
         "Rediculous Seconds Spent During Each Operation Total",
         Sized(Label("name"), Label("operation"), Label("outcome")),
         { (t: (String, String, String)) => t match {
@@ -61,7 +61,7 @@ object RediculousMetrics {
       )
       operationCount <- Counter.labelled(
         collector, 
-        Name("rediculous_operation_count_total"),
+        Name("rediculous_operation_count"),
         "Rediculous Count Of Each Operation",
         Sized(Label("name"), Label("operation"), Label("outcome")),
         { (t: (String, String, String)) => t match {
@@ -83,7 +83,7 @@ object RediculousMetrics {
                   val elapsed = (end - start).toNanos.toDouble
                   val elapsedInSeconds = elapsed / 1000000000
                   val outcomeString = outcomeToString(outcome)
-                  operations.traverse_( operation => 
+                  operations.traverse_[F, Unit]( operation => 
                     durationHistogram.label(name).observe(elapsedInSeconds) >>
                     operationCount.label((name, operation, outcomeString)).inc >>
                     operationTime.label((name, operation, outcomeString)).incBy(elapsedInSeconds)
