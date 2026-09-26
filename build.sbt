@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.1" // 0.1.0 is already on Central (published from epimetheus-community)
+ThisBuild / tlBaseVersion := "0.2" // 0.1.0 is already on Central (published from epimetheus-community)
 
 ThisBuild / organization := "io.chrisdavenport"
 ThisBuild / organizationName := "Christopher Davenport"
