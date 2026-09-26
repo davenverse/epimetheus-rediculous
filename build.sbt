@@ -1,4 +1,4 @@
-ThisBuild / tlBaseVersion := "0.1" // 0.1.0 is already on Central (published from epimetheus-community)
+ThisBuild / tlBaseVersion := "0.2" // 0.1.0 is already on Central (published from epimetheus-community)
 
 ThisBuild / organization := "io.chrisdavenport"
 ThisBuild / organizationName := "Christopher Davenport"
@@ -19,7 +19,7 @@ ThisBuild / scalaVersion := Scala3
 ThisBuild / testFrameworks += new TestFramework("munit.Framework")
 
 
-val munitCatsEffectV = "2.0.0-M3"
+val munitCatsEffectV = "2.2.1"
 
 
 // Projects
@@ -33,8 +33,8 @@ lazy val core = crossProject(JVMPlatform)
     name := "epimetheus-rediculous",
 
     libraryDependencies ++= Seq(
-      "io.chrisdavenport" %%% "epimetheus" % "0.5.0",
-      "io.chrisdavenport" %%% "rediculous" % "0.5.0",
+      "io.chrisdavenport" %%% "epimetheus" % "0.7.1",
+      "io.chrisdavenport" %%% "rediculous" % "0.6.0",
 
       "org.typelevel"               %%% "munit-cats-effect"        % munitCatsEffectV         % Test,
 
